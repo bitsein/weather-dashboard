@@ -117,7 +117,6 @@
     min-height:230px;
     height:100%;
     box-shadow:0 14px 38px rgba(0,0,0,.22);
-    backdrop-filter:blur(8px);
     transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
   }
   .card:hover{
@@ -261,8 +260,6 @@
     --accent:#55e6ff;
     --accent2:#2a8cff;
     --glow:rgba(68,221,255,.22);
-    --pointer-x:50vw;
-    --pointer-y:15vh;
   }
   html{scroll-behavior:smooth;scroll-padding-top:94px}
   body{
@@ -273,16 +270,19 @@
     background-size:40px 40px;
     isolation:isolate;
   }
-  body::before{
-    content:"";
+  .pointer-glow{
     position:fixed;
-    inset:0;
+    left:0;
+    top:0;
+    width:min(70vw,560px);
+    aspect-ratio:1;
     z-index:-1;
     pointer-events:none;
-    background:
-      radial-gradient(560px circle at var(--pointer-x) var(--pointer-y),rgba(41,181,255,.13),transparent 65%),
-      radial-gradient(800px circle at 92% -5%,rgba(107,70,255,.10),transparent 60%),
-      linear-gradient(180deg,rgba(3,7,12,.15),#03070c 78%);
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(41,181,255,.13),transparent 65%);
+    transform:translate3d(calc(50vw - 50%),calc(15vh - 50%),0);
+    will-change:transform;
+    contain:strict;
   }
   body::after{
     content:"";
@@ -292,10 +292,9 @@
     pointer-events:none;
     opacity:.15;
     background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(255,255,255,.018) 4px);
-    mix-blend-mode:soft-light;
   }
   ::selection{color:#001218;background:var(--accent)}
-  .meteorology-bg{opacity:.20;filter:saturate(1.4) contrast(1.05);animation:atmosphericDrift 30s ease-in-out infinite alternate}
+  .meteorology-bg{opacity:.20;animation:atmosphericDrift 30s ease-in-out infinite alternate;will-change:transform;contain:paint}
   .wrap{max-width:1240px;padding:16px 28px 76px}
   .utility{
     position:sticky;
@@ -306,10 +305,10 @@
     padding:10px 14px;
     border:1px solid rgba(130,213,239,.16);
     border-radius:16px;
-    background:rgba(5,13,20,.72);
+    background:rgba(5,13,20,.96);
     box-shadow:0 14px 44px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035);
-    backdrop-filter:blur(18px) saturate(1.25);
-    -webkit-backdrop-filter:blur(18px) saturate(1.25);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
   }
   .brand{color:#d6edf5;font-weight:750;letter-spacing:.04em}
   .brand-mark{
@@ -382,7 +381,7 @@
   }
   .hero-status{display:flex;align-items:center;gap:10px;margin-top:26px;color:#8aa4b0;font:700 13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em}
   .hero-status span{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(7,19,28,.62);font-variant-numeric:tabular-nums}
-  .dashboard-section{scroll-margin-top:94px}
+  .dashboard-section{scroll-margin-top:94px;content-visibility:auto;contain-intrinsic-size:auto 760px}
   .dashboard-section + .dashboard-section{margin-top:76px}
   .section-heading{margin-bottom:20px;padding:0 0 15px;border-color:var(--line)}
   .section-heading h2{font-size:clamp(25px,3vw,34px);font-weight:730;letter-spacing:-.035em}
@@ -396,9 +395,8 @@
     border-radius:20px;
     background:linear-gradient(145deg,rgba(14,29,41,.89),rgba(7,16,24,.91));
     box-shadow:0 18px 46px rgba(0,0,0,.26),inset 0 1px rgba(255,255,255,.035);
+    backdrop-filter:none;
     transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
-    transform-style:preserve-3d;
-    will-change:transform;
     transition:transform .16s ease,border-color .25s ease,box-shadow .25s ease;
   }
   .card::before{
@@ -415,7 +413,7 @@
     box-shadow:0 28px 65px rgba(0,0,0,.38),0 0 34px rgba(41,181,255,.07),inset 0 1px rgba(255,255,255,.06);
   }
   .card:hover::after{opacity:1}
-  .card>*{position:relative;z-index:1;transform:translateZ(14px)}
+  .card>*{position:relative;z-index:1}
   .num{
     width:38px;height:30px;margin-bottom:20px;border-radius:8px;
     color:#a7f3ff;background:rgba(32,137,173,.12);border-color:rgba(85,230,255,.25);
@@ -465,7 +463,7 @@
   .btn:hover{filter:none;color:#001016;background:var(--accent);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 8px 25px rgba(85,230,255,.16)}
   .btn:hover::before{transform:translateX(110%)}
   .scroll-progress{position:fixed;left:0;top:0;z-index:90;width:100%;height:2px;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--accent),#6574ff);box-shadow:0 0 12px var(--accent)}
-  .shortcut-toast{position:fixed;left:50%;bottom:26px;z-index:120;display:flex;align-items:center;gap:9px;padding:10px 14px;color:#dffaff;background:rgba(4,15,23,.90);border:1px solid rgba(85,230,255,.25);border-radius:12px;box-shadow:0 14px 45px rgba(0,0,0,.45);backdrop-filter:blur(15px);font:650 11px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:0;transform:translate(-50%,12px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+  .shortcut-toast{position:fixed;left:50%;bottom:26px;z-index:120;display:flex;align-items:center;gap:9px;padding:10px 14px;color:#dffaff;background:rgba(4,15,23,.96);border:1px solid rgba(85,230,255,.25);border-radius:12px;box-shadow:0 14px 45px rgba(0,0,0,.45);font:650 11px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:0;transform:translate(-50%,12px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
   .shortcut-toast.show{opacity:1;transform:translate(-50%,0)}
   .shortcut-toast kbd{display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;color:#001016;background:var(--accent);border-radius:6px;font:800 11px/1 ui-monospace,monospace}
   .pressed{transform:scale(.985)!important}
@@ -479,12 +477,13 @@
   @media (max-width:640px){
     html{scroll-padding-top:78px}.wrap{padding:10px 14px 54px}.utility{top:8px;min-height:50px;padding:8px 10px}.brand-mark{width:31px;height:31px}.clocks{margin-left:0;padding-left:0;border-left:0}.hero{min-height:240px;margin-top:10px}.hero::before{right:-28%;top:-20%}.hero::after{display:none}h1{font-size:clamp(43px,16vw,72px)}.hero-status{margin-top:20px;flex-wrap:wrap}.dashboard-section + .dashboard-section{margin-top:58px}.card{min-height:0}.latest-links{grid-template-columns:1fr}.weather-links{grid-template-columns:1fr}.extra-link{min-height:112px}
   }
-  @media (pointer:coarse){.card{transform:none!important}}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.meteorology-bg,.brand-mark::after,.hero::before{animation:none!important}[data-reveal]{opacity:1!important;transform:none!important}.card,.extra-link{transform:none!important;transition:none!important}}
+  @media (pointer:coarse){.pointer-glow{display:none}.card{transform:none!important}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pointer-glow{display:none}.meteorology-bg,.brand-mark::after,.hero::before{animation:none!important;will-change:auto}[data-reveal]{opacity:1!important;transform:none!important}.card,.extra-link{transform:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
+<div class="pointer-glow" id="pointerGlow" aria-hidden="true"></div>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <div class="meteorology-bg" aria-hidden="true">
@@ -499,9 +498,6 @@
         <stop offset="0%" stop-color="#7dd3fc" stop-opacity=".18"/>
         <stop offset="100%" stop-color="#c084fc" stop-opacity=".18"/>
       </linearGradient>
-      <filter id="softGlow">
-        <feGaussianBlur stdDeviation="6"/>
-      </filter>
     </defs>
 
     <!-- large synoptic swirl -->
@@ -577,8 +573,8 @@
     </g>
 
     <!-- subtle glow blobs -->
-    <circle cx="1360" cy="210" r="110" fill="#38bdf8" opacity=".05" filter="url(#softGlow)"/>
-    <circle cx="270" cy="820" r="130" fill="#7dd3fc" opacity=".05" filter="url(#softGlow)"/>
+    <circle cx="1360" cy="210" r="124" fill="#38bdf8" opacity=".035"/>
+    <circle cx="270" cy="820" r="146" fill="#7dd3fc" opacity=".035"/>
   </svg>
 </div>
 
@@ -721,17 +717,36 @@
   const toast = document.getElementById('shortcutToast');
   let toastTimer;
 
+  const timeOptions = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
+  const jstTimeFormatter = new Intl.DateTimeFormat('ja-JP',{...timeOptions,timeZone:'Asia/Tokyo'});
+  const utcTimeFormatter = new Intl.DateTimeFormat('ja-JP',{...timeOptions,timeZone:'UTC'});
+  const dateFormatter = new Intl.DateTimeFormat('ja-JP',{
+    timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short'
+  });
+  const jstClock = document.getElementById('jstClock');
+  const utcClock = document.getElementById('utcClock');
+  const dateStamp = document.getElementById('dateStamp');
+  let renderedDate = '';
+  let clockTimer;
+
   function updateClocks() {
     const now = new Date();
-    const options = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
-    document.getElementById('jstClock').textContent = new Intl.DateTimeFormat('ja-JP',{...options,timeZone:'Asia/Tokyo'}).format(now);
-    document.getElementById('utcClock').textContent = new Intl.DateTimeFormat('ja-JP',{...options,timeZone:'UTC'}).format(now);
-    document.getElementById('dateStamp').textContent = new Intl.DateTimeFormat('ja-JP',{
-      timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short'
-    }).format(now).replaceAll('/','.').toUpperCase();
+    jstClock.textContent = jstTimeFormatter.format(now);
+    utcClock.textContent = utcTimeFormatter.format(now);
+    const nextDate = dateFormatter.format(now).replaceAll('/','.').toUpperCase();
+    if (nextDate !== renderedDate) {
+      renderedDate = nextDate;
+      dateStamp.textContent = nextDate;
+    }
   }
-  updateClocks();
-  setInterval(updateClocks,1000);
+  function startClock() {
+    clearTimeout(clockTimer);
+    if (document.hidden) return;
+    updateClocks();
+    clockTimer = setTimeout(startClock,1020-Date.now()%1000);
+  }
+  startClock();
+  document.addEventListener('visibilitychange',startClock);
 
   function showShortcut(number,title) {
     toast.replaceChildren();
@@ -752,29 +767,53 @@
     }
   });
 
-  document.addEventListener('pointermove',event => {
-    document.documentElement.style.setProperty('--pointer-x',`${event.clientX}px`);
-    document.documentElement.style.setProperty('--pointer-y',`${event.clientY}px`);
-  },{passive:true});
+  if (finePointer && !prefersReducedMotion) {
+    const pointerGlow = document.getElementById('pointerGlow');
+    let pointerFrame = 0;
+    let pointerX = innerWidth/2;
+    let pointerY = innerHeight*.15;
+    document.addEventListener('pointermove',event => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!pointerFrame) pointerFrame = requestAnimationFrame(() => {
+        pointerGlow.style.transform = `translate3d(calc(${pointerX}px - 50%),calc(${pointerY}px - 50%),0)`;
+        pointerFrame = 0;
+      });
+    },{passive:true});
+
+    interactiveSurfaces.forEach(surface => {
+      let rect;
+      let surfaceFrame = 0;
+      let surfaceX = 0;
+      let surfaceY = 0;
+      surface.addEventListener('pointerenter',() => { rect = surface.getBoundingClientRect(); },{passive:true});
+      surface.addEventListener('pointermove',event => {
+        surfaceX = event.clientX;
+        surfaceY = event.clientY;
+        if (!surfaceFrame) surfaceFrame = requestAnimationFrame(() => {
+          rect ||= surface.getBoundingClientRect();
+          const x = surfaceX-rect.left;
+          const y = surfaceY-rect.top;
+          surface.style.setProperty('--spot-x',`${x}px`);
+          surface.style.setProperty('--spot-y',`${y}px`);
+          if (surface.classList.contains('card')) {
+            surface.style.setProperty('--rx',`${(-((y/rect.height)-.5)*5).toFixed(2)}deg`);
+            surface.style.setProperty('--ry',`${(((x/rect.width)-.5)*5).toFixed(2)}deg`);
+          }
+          surfaceFrame = 0;
+        });
+      },{passive:true});
+      surface.addEventListener('pointerleave',() => {
+        if (surfaceFrame) cancelAnimationFrame(surfaceFrame);
+        surfaceFrame = 0;
+        rect = undefined;
+        surface.style.setProperty('--rx','0deg');
+        surface.style.setProperty('--ry','0deg');
+      });
+    });
+  }
 
   interactiveSurfaces.forEach(surface => {
-    surface.addEventListener('pointermove',event => {
-      const rect = surface.getBoundingClientRect();
-      const x = event.clientX-rect.left;
-      const y = event.clientY-rect.top;
-      surface.style.setProperty('--spot-x',`${x}px`);
-      surface.style.setProperty('--spot-y',`${y}px`);
-      if (finePointer && !prefersReducedMotion && surface.classList.contains('card')) {
-        const rotateY = ((x/rect.width)-.5)*5;
-        const rotateX = -((y/rect.height)-.5)*5;
-        surface.style.setProperty('--rx',`${rotateX.toFixed(2)}deg`);
-        surface.style.setProperty('--ry',`${rotateY.toFixed(2)}deg`);
-      }
-    },{passive:true});
-    surface.addEventListener('pointerleave',() => {
-      surface.style.setProperty('--rx','0deg');
-      surface.style.setProperty('--ry','0deg');
-    });
     surface.addEventListener('pointerdown',() => {
       surface.classList.add('pressed');
       setTimeout(() => surface.classList.remove('pressed'),160);
@@ -812,13 +851,18 @@
   sections.forEach(section => sectionObserver.observe(section));
 
   const progress = document.getElementById('scrollProgress');
+  let scrollFrame = 0;
   function updateScrollProgress() {
     const max = document.documentElement.scrollHeight-window.innerHeight;
     progress.style.transform = `scaleX(${max > 0 ? window.scrollY/max : 0})`;
+    scrollFrame = 0;
+  }
+  function scheduleScrollProgress() {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollProgress);
   }
   updateScrollProgress();
-  addEventListener('scroll',updateScrollProgress,{passive:true});
-  addEventListener('resize',updateScrollProgress,{passive:true});
+  addEventListener('scroll',scheduleScrollProgress,{passive:true});
+  addEventListener('resize',scheduleScrollProgress,{passive:true});
 </script>
 </body>
 </html>
